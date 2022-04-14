@@ -80,6 +80,11 @@ const Header: NextPage = () => {
             Create
           </p>
         </Link>
+        <Link href="/stacking">
+          <p className="text-lg mx-6 mt-1 font-bold cursor-pointer text-[#344D34] hover:drop-shadow hover:scale-105">
+            Stacking
+          </p>
+        </Link>
         <button
           className="mx-6 mt-1 cursor-pointer hover:drop-shadow hover:scale-105"
           onClick={login}
