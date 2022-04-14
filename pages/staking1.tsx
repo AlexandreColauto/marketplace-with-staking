@@ -16,40 +16,29 @@ const stakeAddrs = "0xab0aE94237428DCF6aC3976EF08aB602a6a586B8";
 import StakingRewards from "../artifacts/contracts/StakingRewards.sol/StakingRewards.json";
 import Token from "../artifacts/contracts/Token.sol/Token.json";
 
-interface stakeholder{
-  useraddress: string;
-  
 
-}
-
-interface stake{
-  stakeId: number;
-  amount: number;
-  stakeOwnerAddress: string;
-  endDate: string;
-  allow: boolean;
-
-}
 
 function Staking(){
-  const { isWeb3Enabled } = useMoralis();
-  const [stakeId,setStakeId]=useState();
-  const [endDate,setEndDate]=useState();
+ 
   const [userStakes, setUserStakes] = useState([]);
-  const [allow,setAllow]=useState<boolean>(false);
+  const [allowed, setAllowed] = useState(false);
   const web3Modal = new Web3Modal();
-  const connection = await web3Modal.connect();
+  const connection = async () => {
+    return await web3Modal.connect();
+  };
   const provider = new ethers.providers.Web3Provider(connection);
   const [signer, setsigner]= useState(provider.getSigner());
   const [stakeOwnerAddress,setStakeOwnerAddress]=useState(signer.getAddress());
   const tokenContract = new ethers.Contract(tokenAddrs, Token.abi, signer);
-  const [balance,setBalance]=useState(await tokenContract.balanceOf(stakeOwnerAddress));
+  const balance = async () => {
+    return await tokenContract.balanceOf(stakeOwnerAddress);
+  };
   const [value, onChange] = useState(new Date());;
   const [amount,setAmount]=useState<number>();
   const [createRate, setCreateRate] = useState<number>();
   const [createReward, setCreateReward] = useState<number>();
 
-
+  
   //isAllowed(userAddress,signer);
 
   async function getStakes(_userAddress, _signer) {
@@ -130,7 +119,7 @@ function Staking(){
       await transaction.wait();
     }
     const today = new Date();
-    const days = Math.ceil((parseInt(value.toString()) - (parseInt(today.toString()) / (1000 * 60 * 60 * 24));
+    const days = Math.ceil((parseInt(value.toString()) - (parseInt(today.toString()) / (1000 * 60 * 60 * 24))));
 
     if (days <= 0) alert("Stake for at least one day");
     if (parseInt(amountWei.toString()) == 0) alert("Cannot stake 0");
@@ -147,7 +136,7 @@ function Staking(){
 
     console.log(amount);
     const today = new Date();
-    const days = Math.ceil(value - (parseInt(today.toString())) / (1000);
+    const days = Math.ceil(value - (parseInt(today.toString())) / (1000));
     const stakeContract = new ethers.Contract(
       stakeAddrs,
       StakingRewards.abi,
@@ -179,7 +168,7 @@ function Staking(){
   async function getFunds() {
     const tokenContract = new ethers.Contract(tokenAddrs, Token.abi, signer);
 
-    let transaction = await tokenContract.sendToContract(userAddress);
+    let transaction = await tokenContract.sendToContract(stakeOwnerAddress);
     await transaction.wait();
   }
 
@@ -206,28 +195,14 @@ function Staking(){
     setAllowed(true)
 
   }
-  
-}
 
+  const maxamount= balance();
 
-export default Home() {
-  const [userAddress, setUserAddress] = useState(null);
-  const [signer, setsigner] = useState(null);
-  const [userStakes, setUserStakes] = useState([]);
-  const [userBalance, setUserBalance] = useState(0);
-  const [amount, setAmount] = useState(0);
-  const [value, onChange] = useState(new Date());
-  const [allowed, setAllowed] = useState(false);
-  const [createRate, setCreateRate] = useState(false);
-  const [createReward, setCreateReward] = useState(false);
-
-  useEffect(() => {
-    initialize();
-  }, []);
-
-  async function initialize() {
-
+    async function setMaxAmount() {
+    setAmount(parseInt(ethers.utils.formatEther(await maxamount)));
   }
+  
+
 
   return (
     <div>
@@ -392,4 +367,4 @@ export default Home() {
       </div>
     </div>
   );
-}
+} export default Staking;
