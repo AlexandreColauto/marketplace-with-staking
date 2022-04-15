@@ -14,6 +14,7 @@ type create = (props: props) => Promise<boolean>;
 function useCreateCollection(): [uploadFile, create] {
   const { isAuthenticated, Moralis } = useMoralis();
   const marketAddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS;
+  const stakingAddress = process.env.NEXT_PUBLIC_NFT_STAKE_ADDRESS;
 
   const create: create = async (props) => {
     const ethers = Moralis.web3Library;
@@ -50,6 +51,7 @@ function useCreateCollection(): [uploadFile, create] {
         ".amazonaws.com/" +
         name.replace(" ", "+") +
         "/";
+      console.log(url);
       const tokenContract = new ethers.ContractFactory(
         NFT.abi,
         NFT.bytecode,
@@ -58,6 +60,7 @@ function useCreateCollection(): [uploadFile, create] {
       const nft = await tokenContract.deploy(
         url + "{id}.json",
         marketAddress,
+        stakingAddress,
         fee,
         address
       );
