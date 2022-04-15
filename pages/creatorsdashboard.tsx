@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import useLoadNFTs from "../src/hooks/useLoadNFTs";
 import ModalListNFT from "../src/components/ModalListNFT";
+import ModalStakeNFT from "../src/components/ModalStakeNFT";
 import type { metadata } from "../src/hooks/useLoadNFTs";
 import Link from "next/link";
 import { useMoralis } from "react-moralis";
 import Moralis from "moralis";
 import Disclosure from "../src/components/Disclosure";
-import NFTTile from "../src/components/NFTTile";
+import NFTTileDashboard from "../src/components/NFTTileDashboard";
 import { useQuery } from "react-query";
 import ToastError from "../src/components/ToastError";
 import ToastSucess from "../src/components/ToastSucess";
@@ -14,7 +15,8 @@ import ToastSucess from "../src/components/ToastSucess";
 function CreatorsDashboard() {
   const { isWeb3Enabled, user } = useMoralis();
   const [nftToList, setnftToList] = useState<metadata>();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalListOpen, setModalListOpen] = useState(false);
+  const [modalStakeOpen, setModalStakeOpen] = useState(false);
   const [userNFTsMetada, setUserNFTsMetada] = useState<metadata[]>();
   const [filteredNFTs, setFilteredNFTs] = useState<metadata[]>();
   const [allCollections, setAllCollections] = useState<boolean>();
@@ -29,10 +31,6 @@ function CreatorsDashboard() {
     enabled: isWeb3Enabled,
     refetchOnWindowFocus: false,
   });
-
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
 
   useEffect(() => {
     executeFectchNFTs();
@@ -61,8 +59,20 @@ function CreatorsDashboard() {
 
   const listNFT = async (nft: metadata) => {
     setnftToList(nft);
-    toggleModal();
+    toggleListModal();
     return;
+  };
+  const stakeNFT = async (nft: metadata) => {
+    setnftToList(nft);
+    toggleStakeModal();
+    return;
+  };
+
+  const toggleListModal = () => {
+    setModalListOpen(!modalListOpen);
+  };
+  const toggleStakeModal = () => {
+    setModalStakeOpen(!modalStakeOpen);
   };
 
   async function picklistChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -74,14 +84,12 @@ function CreatorsDashboard() {
     }
     if (!userNFTsMetada) return;
     const _metadata = userNFTsMetada.filter((item) => {
+      console.log(item);
       return item.address === collectionName.toLowerCase();
     });
     setAllCollections(false);
     setFilteredNFTs(_metadata);
   }
-  const callback = () => {
-    toggleModal();
-  };
 
   return (
     <div className="pb-24">
@@ -104,13 +112,22 @@ function CreatorsDashboard() {
       ) : (
         <div>
           {nftToList && (
-            <ModalListNFT
-              isOpen={modalOpen}
-              toggle={toggleModal}
-              NFTToList={nftToList}
-              setErrorMessage={setisError}
-              setSuccessMessage={setIsSuccess}
-            />
+            <div>
+              <ModalListNFT
+                isOpen={modalListOpen}
+                toggle={toggleListModal}
+                NFTToList={nftToList}
+                setErrorMessage={setisError}
+                setSuccessMessage={setIsSuccess}
+              />
+              <ModalStakeNFT
+                isOpen={modalStakeOpen}
+                toggle={toggleStakeModal}
+                NFTToList={nftToList}
+                setErrorMessage={setisError}
+                setSuccessMessage={setIsSuccess}
+              />
+            </div>
           )}
           <p className="text-5xl text-[#E8C39C] font-bold text-center py-14">
             Your Collection
@@ -140,7 +157,11 @@ function CreatorsDashboard() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                     {filteredNFTs.map((nft: any, i: any) => (
                       <div key={i}>
-                        <NFTTile nft={nft} callback={listNFT} button="List" />
+                        <NFTTileDashboard
+                          nft={nft}
+                          listing={listNFT}
+                          staking={stakeNFT}
+                        />
                       </div>
                     ))}
                   </div>

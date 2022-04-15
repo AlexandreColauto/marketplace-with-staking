@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import useDeployMaket from "../src/hooks/useDeployMaket";
+import useDeployStake from "../src/hooks/useDeployStake";
 
 function Setup() {
   const [address, setAddress] = useState("");
+  const [stakeAddress, setStakeAddress] = useState("");
   const [create] = useDeployMaket();
+  const [createStake] = useDeployStake();
 
   const handleClick = async () => {
     const _address = await create();
     setAddress(_address);
+    // const stakeAddress = await createStake();
+    // setStakeAddress(stakeAddress);
   };
 
   return (
@@ -22,7 +27,8 @@ function Setup() {
         <button onClick={handleClick} className="border p-2 my-4">
           Deploy the market
         </button>
-        <div>Address: {address}</div>
+        <div>Market Address: {address}</div>
+        <div>Stake Address: {stakeAddress}</div>
         <br />
         <br />
         <p>Then edit the .env.example file with the propper information </p>
