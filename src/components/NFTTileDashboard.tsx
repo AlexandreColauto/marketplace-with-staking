@@ -32,15 +32,15 @@ function NFTTile(props: props) {
                 listing(nft);
               }}
             >
-              Listing
+              List
             </button>
             <button
-              className="w-full bg-secondary hover:bg-primary text-white hover:text-white cursor-pointer font-bold py-3 px-12 rounded-xl"
+              className="w-full bg-secondary hover:bg-primary my-2 text-white hover:text-white cursor-pointer font-bold py-3 px-12 rounded-xl"
               onClick={() => {
                 staking(nft);
               }}
             >
-              Staking
+              Stake
             </button>
           </div>
         </div>

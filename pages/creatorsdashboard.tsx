@@ -197,6 +197,7 @@ function CreatorsDashboard() {
                           );
                         })}
                         listNFT={listNFT}
+                        stakeNFT={stakeNFT}
                       />
                     )
                 )}

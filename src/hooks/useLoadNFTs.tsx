@@ -38,7 +38,12 @@ function useLoadNFTs() {
     const _userNFTsCollections = await Moralis.Web3API.account.getNFTs(options);
     if (!_userNFTsCollections) return [, , loading];
     if (!_userNFTsCollections.result) return [, , loading];
+    console.log(_userNFTsCollections);
+
     const userNFTsCollections = _userNFTsCollections.result.filter((nft) => {
+      console.log(
+        Object.keys(addressDic).includes(nft.token_address.toLowerCase())
+      );
       return Object.keys(addressDic).includes(nft.token_address.toLowerCase());
     });
 
