@@ -1,14 +1,14 @@
 import { Disclosure } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import Moralis from "moralis/types";
 import type { metadata } from "../hooks/useLoadNFTs";
-import NFTTile from "./NFTTile";
+import NFTTileDashboard from "./NFTTileDashboard";
 
 interface props {
   collectionName: string;
   filteredNFTs: metadata[];
   listNFT: (arg0: any) => void;
+  stakeNFT: (arg0: any) => void;
 }
 
 export default function Example(props: props) {
@@ -34,10 +34,10 @@ export default function Example(props: props) {
                       key={i}
                       className="px-4 pt-4 pb-2 text-sm text-gray-500"
                     >
-                      <NFTTile
+                      <NFTTileDashboard
                         nft={nft}
-                        callback={props.listNFT}
-                        button="List"
+                        listing={props.listNFT}
+                        staking={props.stakeNFT}
                       />
                     </Disclosure.Panel>
                   ))}

@@ -1,14 +1,13 @@
-import React from "react";
-import type { metadata } from "../hooks/useLoadNFTs";
+import React, { useState } from "react";
+import type { metadata } from "../hooks/useFetchStake";
 
 interface props {
   nft: metadata;
-  listing: (nft: metadata) => void;
-  staking: (nft: metadata) => void;
+  claimStake: (nft: metadata) => void;
 }
 
 function NFTTile(props: props) {
-  const { nft, listing, staking } = props;
+  const { nft, claimStake } = props;
   return (
     <div>
       <div className="border shadow rounded-xl overflow-hidden">
@@ -17,30 +16,22 @@ function NFTTile(props: props) {
           <div className="p-4">
             <p className="text-3x1 text-[#E8C39C]  font-semibold">{nft.name}</p>
             <div>
-              <p className="text-gray-400">
-                {nft.description ? nft.description : <br />}
-              </p>
+              <p className="text-gray-400"></p>
             </div>
             <br />
-            {nft.price && <p>Price: {nft.price} BNB </p>}
-            {nft.fee && <p>Fee: {nft.fee / 10} % </p>}
+            {nft.reward && <p>Current reward: {nft.reward} BNB </p>}
+            {nft.startedDate && (
+              <p>Started Date: {nft.startedDate.toLocaleDateString()} </p>
+            )}
           </div>
           <div className="p-4 bg-transparent">
             <button
               className="w-full bg-secondary hover:bg-primary text-white hover:text-white cursor-pointer font-bold py-3 px-12 rounded-xl"
               onClick={() => {
-                listing(nft);
+                claimStake(nft);
               }}
             >
-              List
-            </button>
-            <button
-              className="w-full bg-secondary hover:bg-primary my-2 text-white hover:text-white cursor-pointer font-bold py-3 px-12 rounded-xl"
-              onClick={() => {
-                staking(nft);
-              }}
-            >
-              Stake
+              Claim
             </button>
           </div>
         </div>
