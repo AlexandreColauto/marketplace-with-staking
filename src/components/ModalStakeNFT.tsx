@@ -80,9 +80,9 @@ function ModalListNFT(props: props) {
               as="p"
               className="text-3xl mt-4  leading-6 font-strong text-gray-900"
             >
-              List Your NFT
+              Stake Your NFT
             </Dialog.Title>
-            <p className="title mt-4 is-4">Do you want to list this NFT?</p>
+            <p className="title mt-4 is-4">Do you want to stake this NFT?</p>
             <br />
             <img
               src={NFTToList?.image}

@@ -107,7 +107,7 @@ function CreatorsDashboard() {
       ) : (
         <div>
           <p className="text-5xl text-[#E8C39C] font-bold text-center py-14">
-            Your Collection
+            Your Stakes
           </p>
           <div className="flex mt-4 bg-black w-4/12 mb-8 mx-auto border border-secondary rounded overflow-hidden"></div>
           <div className="md:flex justify-center">

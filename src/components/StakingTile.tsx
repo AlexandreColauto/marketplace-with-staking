@@ -10,19 +10,25 @@ function NFTTile(props: props) {
   const { nft, claimStake } = props;
   return (
     <div>
-      <div className="border shadow rounded-xl overflow-hidden">
-        <img className="object-cover w-60 h-60 rounded-t " src={nft.image} />
+      <div className="border-4 border-[#E8C39C] bg-white shadow rounded-xl overflow-hidden">
+        <img
+          className="object-cover mx-auto w-60 h-60 rounded-t "
+          src={nft.image}
+        />
         <div className="flex flex-col justify-between">
           <div className="p-4">
-            <p className="text-3x1 text-[#E8C39C]  font-semibold">{nft.name}</p>
+            <p className="text-4xl mx-2 text-[#E8C39C]  font-semibold">{nft.name}</p>
             <div>
-              <p className="text-gray-400"></p>
+              <p className="text-gray-300"></p>
             </div>
             <br />
-            {nft.reward && <p>Current reward: {nft.reward} BNB </p>}
-            {nft.startedDate && (
-              <p>Started Date: {nft.startedDate.toLocaleDateString()} </p>
-            )}
+            <div className="text-base mx-2">
+              {nft.reward && <p><span className="font-bold text-primary">Current reward: </span>{nft.reward} BNB </p>}
+              <br />
+              {nft.startedDate && (
+                <p><span className="font-bold text-primary">Started Date: </span> {nft.startedDate.toLocaleDateString()} </p>
+              )}
+            </div>
           </div>
           <div className="p-4 bg-transparent">
             <button
